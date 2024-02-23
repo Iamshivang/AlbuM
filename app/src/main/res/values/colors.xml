@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="primary">#FF407D</color>
+    <color name="red1">#FF004D</color>
+    <color name="red2">#D24545</color>
+
+    <color name="darkbg_main">#222222</color>
+    <color name="darkerbg_main">#131313</color>
+    <color name="secondary_bg_black">#202020</color>
+    <color name="item_bg_glow">#1D2930</color>
+    <color name="better_white">#E3E1E1</color>
+    <color name="shimmer_background">#B3B3B3</color>
+
+    <color name="edit_text_hint">#999999</color>
+    <color name="edit_text_txt">#999999</color>
+    <color name="edit_text_bg">#f5f5f5</color>
+    <color name="account">#999999</color>
+    <color name="border_grey">#4A67686A</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
+</resources>
