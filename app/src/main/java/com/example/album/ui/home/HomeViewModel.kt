@@ -1,4 +1,4 @@
-package com.example.album.ui
+package com.example.album.ui.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +12,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val repository: MainRepository
 ): ViewModel(){
 

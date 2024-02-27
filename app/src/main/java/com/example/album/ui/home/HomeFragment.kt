@@ -1,13 +1,11 @@
 package com.example.album.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -15,13 +13,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.lottie.LottieAnimationView
-import com.example.album.R
 import com.example.album.adapters.GalleryAdapter
 import com.example.album.databinding.FragmentHomeBinding
 import com.example.album.model.Hit
-import com.example.album.ui.MainViewModel
 import com.example.album.utils.Resource
+import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -29,11 +27,13 @@ class HomeFragment : Fragment() {
     private val TAG= "HomeFragment"
 
     private lateinit var binding: FragmentHomeBinding
-    val viewModel: MainViewModel  by viewModels()
+    private val viewModel: HomeViewModel  by viewModels()
     private lateinit var gallerydapter: GalleryAdapter
-    lateinit var rvGallery: RecyclerView
-    lateinit var progressBar: LottieAnimationView
-    lateinit var paginationProgressBar: ProgressBar
+    private lateinit var rvGallery: RecyclerView
+    private lateinit var progressLoading: LottieAnimationView
+    private lateinit var paginationProgressBar: ProgressBar
+    private lateinit var errorProgressBar: LottieAnimationView
+    private lateinit var shimmerProgress: ShimmerFrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,10 +58,12 @@ class HomeFragment : Fragment() {
 
     private fun setViews() {
 //        insetsController?.isAppearanceLightStatusBars = true
-        gallerydapter= GalleryAdapter()
         rvGallery= binding.rvGallery
         paginationProgressBar= binding.progressBarHorizontal
-        progressBar= binding.pbBubbleLoding
+        progressLoading= binding.pbBubbleLoding
+        errorProgressBar= binding.lottieError
+        shimmerProgress= binding.shimmerProgressLayout
+        gallerydapter= GalleryAdapter()
 
         rvGallery.apply {
             layoutManager = StaggeredGridLayoutManager(2,RecyclerView.VERTICAL)
@@ -93,39 +95,79 @@ class HomeFragment : Fragment() {
 
             when(resource){
                 is Resource.Success -> {
-//                    hideProgressBar()
+
+                    defineState(3)
+
                     resource.data?.let { list->
-//                        newsAdapter.differ.submitList(newsResponse.articles)
-//                        val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2 // reason pf 2: exclude last page and round off of division
-//                        isLastPage = viewModel.breakingNewsPage == totalPages
-//                        if(isLastPage) {
-//                            rvBreakingNews.setPadding(0, 0, 0, 0)
-//                        }
 
-
-                        binding.rvGallery.isVisible= true
                         gallerydapter.differ.submitList(list as ArrayList<Hit>)
-
-
-
-                        Log.e("check", list.toString())
+                        Timber.tag(TAG+" : Result").d(list.toString())
 
                     }
                 }
 
                 is Resource.Error -> {
-//                    hideProgressBar()
+                    defineState(5)
                     resource.message?.let {
-                        Log.e(TAG, "An Error occurred: $it")
-                        Toast.makeText(requireContext(), "Error Occurred: ${it.toString()}", Toast.LENGTH_LONG).show()
+                        Timber.tag(TAG+" : Error").e(it)
                     }
                 }
 
                 is Resource.Loading -> {
-//                    showProgressBar()
+                    defineState(1)
                 }
             }
         })
 
+    }
+
+    private fun defineState(type: Int){
+
+        if(type== 1){
+
+            // Init1al loading
+            progressLoading.isVisible= true
+            rvGallery.isVisible= false
+            paginationProgressBar.isVisible= false
+            errorProgressBar.isVisible= false
+            shimmerProgress.isVisible= false
+
+        }else if (type== 2){
+
+            // after getting data loading it into images : Shimmering State
+            shimmerProgress.isVisible= true
+            progressLoading.isVisible= false
+            rvGallery.isVisible= false
+            paginationProgressBar.isVisible= false
+            errorProgressBar.isVisible= false
+            shimmerProgress.startShimmer()
+
+        }else if (type== 3){
+
+            // when photos are loaded
+            rvGallery.isVisible= true
+            progressLoading.isVisible= false
+            paginationProgressBar.isVisible= false
+            errorProgressBar.isVisible= false
+            shimmerProgress.isVisible= false
+            shimmerProgress.stopShimmer()
+
+        }else if (type== 4){
+
+            // paging progress
+            rvGallery.isVisible= true
+            paginationProgressBar.isVisible= true
+            progressLoading.isVisible= false
+            errorProgressBar.isVisible= false
+            shimmerProgress.isVisible= false
+        }else if (type== 5){
+
+            // Error on loading data
+            errorProgressBar.isVisible= true
+            progressLoading.isVisible= false
+            rvGallery.isVisible= false
+            paginationProgressBar.isVisible= false
+            shimmerProgress.isVisible= false
+        }
     }
 }
