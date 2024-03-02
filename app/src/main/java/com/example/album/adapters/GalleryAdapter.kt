@@ -1,19 +1,19 @@
 package com.example.album.adapters
-
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.example.album.R
 import com.example.album.databinding.GalleryItemBinding
-import com.example.album.databinding.ImageItemBinding
 import com.example.album.model.Hit
 import timber.log.Timber
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 
 private val TAG= "GalleryAdapter"
 
@@ -73,22 +73,32 @@ class GalleryAdapter(): RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
             model.largeImageURL?.let {
                 try {
 
-//                    val circularProgressDrawable = CircularProgressDrawable(this)
-//                    circularProgressDrawable.apply {
-//                        strokeWidth = 5f
-//                        centerRadius = 30f
-//                        setColorSchemeColors(
-//                            ContextCompat.getColor(this@loadImage, R.color.black_200)
-//                        )
-//                        start()
-//                    }
-
                     Glide
                         .with(itemBinding.root.context)
                         .load(it)
                         .fitCenter()
-                        .placeholder(R.drawable.flag)
-                        .into(itemBinding.ivGalleryPhoto)
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                TODO("Not yet implemented")
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable,
+                                model: Any,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                itemBinding.ivGalleryPhoto.visibility= View.VISIBLE
+                                itemBinding.sflPlaceholder.visibility= View.GONE
+                                return false
+                            }
+                        }).into(itemBinding.ivGalleryPhoto)
 
                 }catch (e: Exception){
 

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -91,7 +90,7 @@ class HomeFragment : Fragment() {
 
     private fun setObservers(){
 
-        viewModel.liveDataList.observe(requireActivity(), Observer {resource ->
+        viewModel.liveDataList.observe(viewLifecycleOwner){resource ->
 
             when(resource){
                 is Resource.Success -> {
@@ -101,7 +100,7 @@ class HomeFragment : Fragment() {
                     resource.data?.let { list->
 
                         gallerydapter.differ.submitList(list as ArrayList<Hit>)
-                        Timber.tag(TAG+" : Result").d(list.toString())
+                        Timber.tag(TAG+ " : Result").d(list.toString())
 
                     }
                 }
@@ -109,7 +108,7 @@ class HomeFragment : Fragment() {
                 is Resource.Error -> {
                     defineState(5)
                     resource.message?.let {
-                        Timber.tag(TAG+" : Error").e(it)
+                        Timber.tag(TAG+ " : Error").e(it)
                     }
                 }
 
@@ -117,8 +116,7 @@ class HomeFragment : Fragment() {
                     defineState(1)
                 }
             }
-        })
-
+        }
     }
 
     private fun defineState(type: Int){
@@ -131,6 +129,7 @@ class HomeFragment : Fragment() {
             paginationProgressBar.isVisible= false
             errorProgressBar.isVisible= false
             shimmerProgress.isVisible= false
+            progressLoading.playAnimation()
 
         }else if (type== 2){
 
@@ -141,6 +140,7 @@ class HomeFragment : Fragment() {
             paginationProgressBar.isVisible= false
             errorProgressBar.isVisible= false
             shimmerProgress.startShimmer()
+            progressLoading.cancelAnimation()
 
         }else if (type== 3){
 
@@ -160,6 +160,7 @@ class HomeFragment : Fragment() {
             progressLoading.isVisible= false
             errorProgressBar.isVisible= false
             shimmerProgress.isVisible= false
+
         }else if (type== 5){
 
             // Error on loading data
@@ -168,6 +169,8 @@ class HomeFragment : Fragment() {
             rvGallery.isVisible= false
             paginationProgressBar.isVisible= false
             shimmerProgress.isVisible= false
+            errorProgressBar.playAnimation()
+
         }
     }
 }

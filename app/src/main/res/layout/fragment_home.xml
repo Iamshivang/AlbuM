@@ -55,8 +55,8 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_error"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_gravity="center"
         android:elevation="10dp"
         android:scaleX="1.5"
@@ -129,7 +129,7 @@
             android:paddingTop="10dp"
             tools:listitem="@layout/gallery_item"
             android:visibility="gone"
-            tools:visibility="visible"
+            tools:visibility="gone"
             app:spanCount="2"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             android:elevation="2dp" />
