@@ -18,5 +18,9 @@
         android:id="@+id/fullScreenFragment"
         android:name="com.example.album.ui.fullScreenPhoto.FullScreenFragment"
         android:label="fragment_full_screen"
-        tools:layout="@layout/fragment_full_screen" />
+        tools:layout="@layout/fragment_full_screen" >
+        <argument
+            android:name="hit"
+            app:argType="com.example.album.model.Hit" />
+    </fragment>
 </navigation>

@@ -3,12 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fullScreenPhoto.FullScreenFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/pv_fullscreen"
+        android:scaleType="fitXY"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent"/>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:padding="12dp"
+        android:tint="@color/white"
+        android:background="@drawable/bg_rounded_btn"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        app:srcCompat="@drawable/arrow_back_icon_24"
+        android:id="@+id/backBtn"/>
 
 </FrameLayout>

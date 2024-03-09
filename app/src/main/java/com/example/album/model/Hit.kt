@@ -10,20 +10,76 @@ data class Hit(
     val id: Int?,
     val imageHeight: Int?,
     val imageSize: Int?,
+    val imageURL: String?= null,
     val imageWidth: Int?,
     val largeImageURL: String?= null,
     val likes: Int?,
-    val pageURL: String?= null,
     val previewHeight: Int?,
     val previewURL: String?= null,
     val previewWidth: Int?,
     val tags: String?= null,
-    val type: String?= null,
     val user: String?= null,
-    val userImageURL: String?= null,
     val user_id: Int?,
     val views: Int?,
     val webformatHeight: Int?,
-    val webformatURL: String?= null,
     val webformatWidth: Int?
-)
+): Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeValue(collections)
+        parcel.writeValue(comments)
+        parcel.writeValue(downloads)
+        parcel.writeValue(id)
+        parcel.writeValue(imageHeight)
+        parcel.writeValue(imageSize)
+        parcel.writeString(imageURL)
+        parcel.writeValue(imageWidth)
+        parcel.writeString(largeImageURL)
+        parcel.writeValue(likes)
+        parcel.writeValue(previewHeight)
+        parcel.writeString(previewURL)
+        parcel.writeValue(previewWidth)
+        parcel.writeString(tags)
+        parcel.writeString(user)
+        parcel.writeValue(user_id)
+        parcel.writeValue(views)
+        parcel.writeValue(webformatHeight)
+        parcel.writeValue(webformatWidth)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Hit> {
+        override fun createFromParcel(parcel: Parcel): Hit {
+            return Hit(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Hit?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
