@@ -24,4 +24,6 @@
         app:srcCompat="@drawable/arrow_back_icon_24"
         android:id="@+id/backBtn"/>
 
+
+
 </FrameLayout>

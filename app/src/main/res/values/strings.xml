@@ -5,4 +5,6 @@
     <string name="start_tying_to_search">Start tying to search...</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="set_as">SET AS</string>
+    <string name="more">MORE</string>
 </resources>
