@@ -6,11 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fullScreenPhoto.FullScreenFragment">
 
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/pv_fullscreen"
-        android:scaleType="fitXY"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:layout_width="wrap_content"
@@ -24,6 +23,24 @@
         app:srcCompat="@drawable/arrow_back_icon_24"
         android:id="@+id/backBtn"/>
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="bottom|center"
+        android:orientation="vertical"
+        android:layout_gravity="bottom|end">
 
+        <include
+            layout="@layout/like"/>
+
+        <include
+            layout="@layout/set_as"/>
+
+        <include
+            layout="@layout/more"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </FrameLayout>

@@ -9,13 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.album.R
+import com.example.album.adapters.ImageSliderAdapter
 import com.example.album.databinding.FragmentFullScreenBinding
+import com.example.album.model.Hit
 import timber.log.Timber
 
 class FullScreenFragment : Fragment() {
@@ -23,6 +26,9 @@ class FullScreenFragment : Fragment() {
     private val TAG= "FullScreenFragment"
 
     private lateinit var binding: FragmentFullScreenBinding
+    private var currentPosition: Int = 0
+    private lateinit var viewPager: ViewPager2
+    private lateinit var images: ArrayList<Hit>
     private val args : FullScreenFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -41,44 +47,13 @@ class FullScreenFragment : Fragment() {
 
     private fun setUpViews(){
 
-        val hit= args.hit
-
-        hit.largeImageURL?.let {
-            try {
-
-                Glide
-                    .with(binding.root)
-                    .load(it)
-                    .fitCenter()
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun onResourceReady(
-                            resource: Drawable,
-                            model: Any,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource,
-                            isFirstResource: Boolean
-                        ): Boolean {
-//                            itemBinding.ivGalleryPhoto.visibility= View.VISIBLE
-//                            itemBinding.sflPlaceholder.visibility= View.GONE
-                            requireActivity().transparentStatusBar(true)
-                            return false
-                        }
-                    }).into(binding.pvFullscreen)
-
-            }catch (e: Exception){
-
-                Timber.tag(TAG).e("An Error occurred: %s", e)
-            }
-        }
+        images= args.photoResponse.hits as ArrayList<Hit>
+        currentPosition= args.position
+        val adapter = ImageSliderAdapter(images)
+        viewPager= binding.viewPager
+        viewPager.adapter = adapter
+        viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+        viewPager.setCurrentItem(currentPosition, false)
     }
 
     private fun Activity.transparentStatusBar(it: Boolean) {

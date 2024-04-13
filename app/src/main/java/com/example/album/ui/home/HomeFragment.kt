@@ -21,6 +21,7 @@ import com.example.album.R
 import com.example.album.adapters.GalleryAdapter
 import com.example.album.databinding.FragmentHomeBinding
 import com.example.album.model.Hit
+import com.example.album.model.PhotosResponse
 import com.example.album.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -34,6 +35,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel  by viewModels()
     private lateinit var gallerydapter: GalleryAdapter
     private lateinit var rvGallery: RecyclerView
+    private lateinit var images: ArrayList<Hit>
     private lateinit var progressLoading: LottieAnimationView
     private lateinit var paginationProgressBar: ProgressBar
     private lateinit var errorProgressBar: LottieAnimationView
@@ -79,7 +81,7 @@ class HomeFragment : Fragment() {
             override fun onCLick(position: Int, model: Hit) {
 
                 // using SafeArg
-                val action = HomeFragmentDirections.actionHomeFragmentToFullScreenFragment(model)
+                val action = HomeFragmentDirections.actionHomeFragmentToFullScreenFragment(PhotosResponse(images,0,0), position)
                 findNavController().navigate(action)
 
                 /* manually creating bundle
@@ -105,7 +107,8 @@ class HomeFragment : Fragment() {
 
                     resource.data?.let { list->
 
-                        gallerydapter.differ.submitList(list as ArrayList<Hit>)
+                        images= list as ArrayList<Hit>
+                        gallerydapter.differ.submitList(list)
                         Timber.tag(TAG+ " : Result").d(list.toString())
 
                     }
