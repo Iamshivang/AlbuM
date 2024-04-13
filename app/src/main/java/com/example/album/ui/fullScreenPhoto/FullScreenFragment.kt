@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -47,6 +48,7 @@ class FullScreenFragment : Fragment() {
 
     private fun setUpViews(){
 
+        requireActivity().transparentStatusBar(true)
         images= args.photoResponse.hits as ArrayList<Hit>
         currentPosition= args.position
         val adapter = ImageSliderAdapter(images)
@@ -54,6 +56,35 @@ class FullScreenFragment : Fragment() {
         viewPager.adapter = adapter
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
         viewPager.setCurrentItem(currentPosition, false)
+
+        // registering for page change callback
+        binding.viewPager.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
+
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+
+                    //update the image number textview
+//                    binding.imageNumberTV.text = "${position + 1} / 4"
+
+                }
+            }
+        )
+
+
+        adapter.setOnMoreClickListener(object : ImageSliderAdapter.OnMoreClickListener {
+            override fun onMoreClick(position: Int, model: Hit) {
+
+                Toast.makeText(requireActivity(), "OK", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        adapter.setOnSetAsClickListener(object : ImageSliderAdapter.OnSetAsClickListener {
+            override fun onSetAsClick(position: Int, model: Hit) {
+
+                Toast.makeText(requireActivity(), "OK Done", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun Activity.transparentStatusBar(it: Boolean) {
@@ -67,5 +98,14 @@ class FullScreenFragment : Fragment() {
                 this,
                 R.color.primary
             )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // unregistering the onPageChangedCallback
+        viewPager.unregisterOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {}
+        )
     }
 }

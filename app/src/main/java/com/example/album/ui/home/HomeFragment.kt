@@ -61,7 +61,7 @@ class HomeFragment : Fragment() {
 
         requireActivity().transparentStatusBar(true)
 
-        viewModel.loadListOfData("india", "", 1)
+        viewModel.loadListOfData("car", "", 1)
     }
 
     private fun setViews() {
