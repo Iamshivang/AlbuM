@@ -7,6 +7,10 @@
     <color name="red1">#FF004D</color>
     <color name="red2">#D24545</color>
 
+    <color name="base_bg">#1F2544</color>
+    <color name="base2_bg">#474F7A</color>
+    <color name="base3_bg">#81689D</color>
+
     <color name="darkbg_main">#222222</color>
     <color name="darkerbg_main">#131313</color>
     <color name="secondary_bg_black">#202020</color>

@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.github.chrisbanes.photoview.PhotoView
@@ -10,14 +9,13 @@
         android:scaleType="fitXY"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:src="@drawable/flag"
-        app:shapeAppearance="?attr/actionButtonStyle"/>
+        tools:src="@drawable/flag"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="40dp"
         android:gravity="bottom|center"
         android:orientation="vertical"
         android:layout_gravity="bottom|end">
@@ -25,6 +23,10 @@
         <include
             android:id="@+id/i_like"
             layout="@layout/like"/>
+
+        <include
+            android:id="@+id/i_downloads"
+            layout="@layout/downloads"/>
 
         <include
             android:id="@+id/i_set_as"

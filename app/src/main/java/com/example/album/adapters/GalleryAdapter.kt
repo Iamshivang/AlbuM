@@ -11,6 +11,7 @@ import com.example.album.databinding.GalleryItemBinding
 import com.example.album.model.Hit
 import timber.log.Timber
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
@@ -106,13 +107,6 @@ class GalleryAdapter(): RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
                 }
             }
 
-//            model.title?.let {
-//                itemBinding.tvSimilarAppName1.text= it
-//            }
-//
-//            model.rating?.let {
-//                itemBinding.tvSimilarAppRating.text= it
-//            }
         }
     }
 }

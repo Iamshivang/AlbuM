@@ -7,4 +7,10 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="set_as">SET AS</string>
     <string name="more">MORE</string>
+    <string name="set_to_home_screen">Set to home screen</string>
+    <string name="cancel">Cancel</string>
+    <string name="set_to_home_lock_screens"><![CDATA[Set to home & lock screens]]></string>
+    <string name="share">Share</string>
+    <string name="add_to_collection">Add to Collection</string>
+    <string name="download">Download</string>
 </resources>

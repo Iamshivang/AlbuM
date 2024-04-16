@@ -3,11 +3,16 @@ package com.example.album.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.album.R
 import com.example.album.databinding.FullScreenItemBinding
 import com.example.album.model.Hit
+import timber.log.Timber
+
+    private val TAG= "ImageSliderAdapter"
 
 class ImageSliderAdapter(private val items: List<Hit>): RecyclerView.Adapter<ImageSliderAdapter.ViewHolder>() {
 
@@ -49,22 +54,37 @@ class ImageSliderAdapter(private val items: List<Hit>): RecyclerView.Adapter<Ima
 
         fun bindItem(model: Hit){
 
+            var dummyURL: String?= null
+
             model.previewURL?.let {
+                dummyURL= it
+            }
+
+            model.largeImageURL?.let {
                 try {
+
                     Glide
                         .with(itemBinding.root.context)
                         .load(it)
-                        .placeholder(R.drawable.flag)
+                        .thumbnail(Glide.with(itemBinding.root.context).load(dummyURL))
+                        .fitCenter()
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .error(R.drawable.placeholder)
+                        .placeholder(R.drawable.placeholder)
                         .into(itemBinding.pvFullscreen)
 
                 }catch (e: Exception){
 
-//                    Timber.tag(TAG).e("An Error occurred: %s", e)
+                    Timber.tag(TAG).e("An Error occurred: %s", e)
                 }
             }
 
             model.likes?.let {
                 itemBinding.iLike.tvLike.text= it.toString()
+            }
+
+            model.downloads?.let {
+                itemBinding.iDownloads.tvDownloads.text= it.toString()
             }
 
             itemBinding.iMore.ivMore.setOnClickListener {
