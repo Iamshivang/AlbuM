@@ -6,4 +6,6 @@ import com.example.album.utils.Resource
 interface MainRepository {
 
     suspend fun getPhotos(query: String, colors: String, pageNumber: Int): Resource<List<Hit>>
+
+    fun downloadFile(username: String, url: String): Long
 }

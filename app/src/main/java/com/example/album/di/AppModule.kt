@@ -1,5 +1,6 @@
 package com.example.album.di
 
+import android.app.Application
 import com.example.album.api.PhotosAPI
 import com.example.album.repository.DefaultRepository
 import com.example.album.repository.MainRepository
@@ -27,5 +28,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMainRepository(api: PhotosAPI): MainRepository = DefaultRepository(api)
+    fun provideMainRepository(api: PhotosAPI, app: Application): MainRepository = DefaultRepository(api, app)
 }
