@@ -14,6 +14,7 @@ data class Hit(
     val imageWidth: Int?,
     val largeImageURL: String?= null,
     val likes: Int?,
+    val pageURL: String?= null,
     val previewHeight: Int?,
     val previewURL: String?= null,
     val previewWidth: Int?,
@@ -35,6 +36,7 @@ data class Hit(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
@@ -58,6 +60,7 @@ data class Hit(
         parcel.writeValue(imageWidth)
         parcel.writeString(largeImageURL)
         parcel.writeValue(likes)
+        parcel.writeString(pageURL)
         parcel.writeValue(previewHeight)
         parcel.writeString(previewURL)
         parcel.writeValue(previewWidth)

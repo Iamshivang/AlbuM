@@ -10,19 +10,16 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
-import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -42,6 +39,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Inject
 
 
@@ -154,8 +154,8 @@ class FullScreenFragment : Fragment() {
         val dialog = BottomSheetDialog(requireActivity())
 
         moreBottomSheetBinding.rlShare.setOnClickListener {
-            Toast.makeText(requireActivity(), "share", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
+            shareImage(model.largeImageURL!!)
         }
 
         moreBottomSheetBinding.rlDownload.setOnClickListener {
@@ -170,6 +170,13 @@ class FullScreenFragment : Fragment() {
         moreBottomSheetBinding.rlAdd.setOnClickListener {
             Toast.makeText(requireActivity(), "Share", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
+        }
+
+        moreBottomSheetBinding.rlVisit.setOnClickListener{
+
+            val uri = Uri.parse(model.pageURL)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
         }
 
         moreBottomSheetBinding.rlClose.setOnClickListener {
@@ -330,6 +337,51 @@ class FullScreenFragment : Fragment() {
             }
         }
     }
+
+    fun Fragment.shareImage(imageUrl: String) {
+
+        val file = File(requireContext().cacheDir, "shared_image.jpg")
+
+        // Load the image and save it to a file
+        Glide.with(this)
+            .asBitmap()
+            .load(imageUrl)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    try {
+                        FileOutputStream(file).use { outputStream ->
+                            resource.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                        }
+
+                        // Create an Intent to share the image
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "image/jpeg"
+                            putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.provider", file))
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+
+                        // Launch the Intent
+                        startActivity(Intent.createChooser(shareIntent, "Share Image"))
+
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        Timber.tag(TAG).d("Failed to share image: ${e.message}")
+                        Toast.makeText(requireContext(), "Failed to share image", Toast.LENGTH_SHORT).show()
+                    } catch (e: Exception) {
+                        // Handle any other unexpected exceptions
+                        e.printStackTrace()
+                        Timber.tag(TAG).d("Unexpected error occurred: ${e.message}")
+                        Toast.makeText(requireContext(), "Unexpected error occurred", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    // Not required
+                }
+            })
+    }
+
+
 
     private fun Activity.transparentStatusBar(it: Boolean) {
         window.decorView.systemUiVisibility =
