@@ -12,12 +12,10 @@ interface PhotosAPI {
     @GET("/api/")
     suspend fun getPhotos(
         @Query("q") query: String,
-        @Query("colors") colors: String,
         @Query("page") page: Int,
         @Query("key") apiKey: String= Constants.API_KEY,
-        @Query("per_page") per_page: Int= Constants.per_page,
         @Query("image_type") imageType: String= Constants.imageType,
         @Query("orientation") orientation: String= Constants.orientation,
         @Query("pretty") pretty: Boolean= Constants.isPretty
-    ): Response<PhotosResponse>
+    ): PhotosResponse
 }

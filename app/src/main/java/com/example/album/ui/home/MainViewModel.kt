@@ -3,8 +3,9 @@ package com.example.album.ui.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.example.album.model.Hit
-import com.example.album.repository.MainRepository
+import com.example.album.repository.DefaultRepository
 import com.example.album.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,10 +13,13 @@ import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val repository: MainRepository
+class MainViewModel @Inject constructor(
+    private val repository: DefaultRepository
 ): ViewModel(){
 
+    //
+    val list= repository.getHits("india").cachedIn(viewModelScope)
+    //
     var liveDataList: MutableLiveData<Resource<List<Hit>>> = MutableLiveData()
 
     fun loadListOfData(query: String, colors: String, pageNumber: Int)= viewModelScope.launch{
@@ -26,8 +30,8 @@ class HomeViewModel @Inject constructor(
 
             if(hasInternetConnectivity()){
 
-                val list = repository.getPhotos(query, colors, pageNumber)
-                liveDataList.postValue(list)
+//                val list = repository.getPhotos(query, colors, pageNumber)
+//                liveDataList.postValue(list)
             }else{
                 liveDataList.postValue(Resource.Error("No Internet Connection."))
             }

@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_fullScreenFragment"
-            app:destination="@id/fullScreenFragment" />
+            app:destination="@id/fullScreenFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/fullScreenFragment"
@@ -20,9 +22,6 @@
         android:label="fragment_full_screen"
         tools:layout="@layout/fragment_full_screen" >
 
-        <argument
-            android:name="photoResponse"
-            app:argType="com.example.album.model.PhotosResponse" />
         <argument
             android:name="position"
             app:argType="integer"

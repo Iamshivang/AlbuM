@@ -2,7 +2,7 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Access files in the app's cache directory -->
     <cache-path
-        name="share_image"
+        name="shared_images"
         path="/" />
     <!-- Add more paths if needed -->
 </paths>

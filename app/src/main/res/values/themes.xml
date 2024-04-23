@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.AlbuM" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/red2</item>
+        <item name="android:statusBarColor">@color/base2_bg</item>
         <item name="android:navigationBarColor">@color/base_bg</item>
     </style>
 

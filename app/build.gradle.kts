@@ -54,8 +54,8 @@ dependencies {
 //    implementation("androidx.lifecycle:lifecycle-extensions:2.7.0")
 
     // Coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     // Coroutine Lifecycle Scopes
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
@@ -87,8 +87,9 @@ dependencies {
     // glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    //  androidx fragment
-    implementation("androidx.fragment:fragment-ktx:1.6.2")
+    // paging3
+    val paging_version = "3.2.1"
+    implementation("androidx.paging:paging-runtime-ktx:$paging_version")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

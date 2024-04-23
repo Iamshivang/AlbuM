@@ -32,7 +32,7 @@ import com.example.album.databinding.FragmentFullScreenBinding
 import com.example.album.databinding.MoreBottomsheetBinding
 import com.example.album.databinding.SetAsBottomsheetBinding
 import com.example.album.model.Hit
-import com.example.album.repository.MainRepository
+import com.example.album.repository.DefaultRepository
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +52,7 @@ class FullScreenFragment : Fragment() {
     private val STORAGE_PERMISSION_CODE = 23
 
     @Inject
-    lateinit var repository: MainRepository
+    lateinit var repository: DefaultRepository
     lateinit var currModel: Hit
 
     private lateinit var binding: FragmentFullScreenBinding
@@ -80,7 +80,10 @@ class FullScreenFragment : Fragment() {
     private fun setUpViews(){
 
         requireActivity().transparentStatusBar(true)
-        images= args.photoResponse.hits!!
+        binding.backBtn.setOnClickListener{
+            requireActivity().onBackPressed()
+        }
+//        images= args.photoResponse.hits!!
         currentPosition= args.position
         val adapter = ImageSliderAdapter(images)
         viewPager= binding.viewPager
@@ -340,7 +343,7 @@ class FullScreenFragment : Fragment() {
 
     fun Fragment.shareImage(imageUrl: String) {
 
-        val file = File(requireContext().cacheDir, "shared_image.jpg")
+        val file = File(requireContext().cacheDir, "share_image.jpg")
 
         // Load the image and save it to a file
         Glide.with(this)
@@ -392,7 +395,7 @@ class FullScreenFragment : Fragment() {
                 android.R.color.transparent
             ) else ContextCompat.getColor(
                 this,
-                R.color.primary
+                R.color.base2_bg
             )
     }
 

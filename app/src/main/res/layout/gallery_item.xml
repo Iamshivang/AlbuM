@@ -4,18 +4,18 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="8dp"
+    android:layout_marginEnd="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:maxHeight="300dp"
         android:scaleType="fitXY"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="10dp"
         app:shapeAppearance="?attr/actionButtonStyle"
         app:shapeAppearanceOverlay="@style/imageViewRounded"
         android:id="@+id/ivGalleryPhoto"/>
@@ -28,7 +28,6 @@
         android:animationCache="true"
         android:visibility="visible"
         tools:visibility="visible"
-        android:layout_marginEnd="10dp"
         app:shimmer_repeat_mode="restart"
         app:shimmer_shape="radial"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,6 +38,7 @@
             android:layout_width="match_parent"
             app:layout_constraintWidth_percent="0.47"
             android:layout_height="250dp"
+            android:backgroundTint="@color/base3_bg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"

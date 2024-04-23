@@ -3,7 +3,6 @@ package com.example.album.di
 import android.app.Application
 import com.example.album.api.PhotosAPI
 import com.example.album.repository.DefaultRepository
-import com.example.album.repository.MainRepository
 import com.example.album.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -28,5 +27,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMainRepository(api: PhotosAPI, app: Application): MainRepository = DefaultRepository(api, app)
+    fun provideMainRepository(api: PhotosAPI, app: Application): DefaultRepository = DefaultRepository(api, app)
 }

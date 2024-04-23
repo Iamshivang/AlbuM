@@ -1,53 +1,57 @@
-package com.example.album.adapters
+package com.example.album.paging
+
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.album.databinding.GalleryItemBinding
-import com.example.album.model.Hit
-import timber.log.Timber
 import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.example.album.databinding.GalleryItemBinding
+import com.example.album.model.Hit
+import timber.log.Timber
 
-private val TAG= "GalleryAdapter"
+private val TAG= "HitPagingAdapter"
 
-class GalleryAdapter(): RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
+class HitPagingAdapter: PagingDataAdapter<Hit, HitPagingAdapter.ViewHolder>(COMPARATOR) {
 
     private var onClickListener: OnClickListener?= null
 
-    private val differCallBack= object: DiffUtil.ItemCallback<Hit>() {
-        override fun areItemsTheSame(oldItem: Hit, newItem: Hit): Boolean {
-            return oldItem.id== newItem.id
-        }
+    companion object{
 
-        override fun areContentsTheSame(oldItem: Hit, newItem: Hit): Boolean {
-            return oldItem== newItem
-        }
+        private val COMPARATOR= object: DiffUtil.ItemCallback<Hit>() {
+            override fun areItemsTheSame(oldItem: Hit, newItem: Hit): Boolean {
+                return oldItem.id== newItem.id
+            }
 
+            override fun areContentsTheSame(oldItem: Hit, newItem: Hit): Boolean {
+                return oldItem== newItem
+            }
+
+        }
     }
-
-    // Async list differ - Tool take two list and compare
-    val differ= AsyncListDiffer(this, differCallBack)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(GalleryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-    }
-
-    override fun getItemCount(): Int {
-        return differ.currentList.size
+        return ViewHolder(
+            GalleryItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-         val item= differ.currentList.get(position)
-         holder.bindItem(item)
+        val item= getItem(position)
+        holder.bindItem(item!!)
 
         holder.itemView.setOnClickListener{
             if(onClickListener!= null)
@@ -58,7 +62,6 @@ class GalleryAdapter(): RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
 
     }
 
-
     fun setOnClickListener(onClickListener: OnClickListener) {
         this.onClickListener = onClickListener
     }
@@ -67,9 +70,15 @@ class GalleryAdapter(): RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
         fun onCLick(position: Int, model: Hit)
     }
 
-    class ViewHolder(private val itemBinding:GalleryItemBinding): RecyclerView.ViewHolder(itemBinding.root){
+    class ViewHolder(private val itemBinding: GalleryItemBinding): RecyclerView.ViewHolder(itemBinding.root){
+
         fun bindItem(model: Hit){
 
+            var dummyURL: String?= null
+
+            model.previewURL?.let {
+                dummyURL= it
+            }
 
             model.largeImageURL?.let {
                 try {
@@ -77,6 +86,7 @@ class GalleryAdapter(): RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
                     Glide
                         .with(itemBinding.root.context)
                         .load(it)
+                        .thumbnail(Glide.with(itemBinding.root.context).load(dummyURL))
                         .fitCenter()
                         .listener(object : RequestListener<Drawable> {
                             override fun onLoadFailed(
@@ -85,7 +95,9 @@ class GalleryAdapter(): RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
                                 target: Target<Drawable>,
                                 isFirstResource: Boolean
                             ): Boolean {
-                                TODO("Not yet implemented")
+                                itemBinding.ivGalleryPhoto.isGone
+                                itemBinding.sflPlaceholder.isVisible
+                                return false
                             }
 
                             override fun onResourceReady(

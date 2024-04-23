@@ -8,20 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.lottie.LottieAnimationView
 import com.example.album.R
-import com.example.album.adapters.GalleryAdapter
 import com.example.album.databinding.FragmentHomeBinding
 import com.example.album.model.Hit
 import com.example.album.model.PhotosResponse
+import com.example.album.paging.HitPagingAdapter
 import com.example.album.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -30,12 +27,12 @@ import timber.log.Timber
 class HomeFragment : Fragment() {
 
     private val TAG= "HomeFragment"
+    private val viewModel: MainViewModel by activityViewModels()
 
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel: HomeViewModel  by viewModels()
-    private lateinit var gallerydapter: GalleryAdapter
+    private lateinit var gallerydapter: HitPagingAdapter
     private lateinit var rvGallery: RecyclerView
-    private lateinit var images: ArrayList<Hit>
+    private var images: ArrayList<Hit> = ArrayList()
     private lateinit var progressLoading: LottieAnimationView
     private lateinit var paginationProgressBar: ProgressBar
     private lateinit var errorProgressBar: LottieAnimationView
@@ -53,47 +50,41 @@ class HomeFragment : Fragment() {
 
         init()
         setViews()
-        setObservers()
 
     }
 
     private fun init() {
 
         requireActivity().transparentStatusBar(true)
-
-        viewModel.loadListOfData("car", "", 1)
     }
 
     private fun setViews() {
-//        insetsController?.isAppearanceLightStatusBars = true
         rvGallery= binding.rvGallery
         paginationProgressBar= binding.progressBarHorizontal
         progressLoading= binding.pbBubbleLoding
         errorProgressBar= binding.lottieError
-        gallerydapter= GalleryAdapter()
+        gallerydapter= HitPagingAdapter()
+
+        defineState(3)
 
         rvGallery.apply {
-            layoutManager = StaggeredGridLayoutManager(2,RecyclerView.VERTICAL)
+            layoutManager = GridLayoutManager(requireActivity(), 2)
             adapter = gallerydapter
+            setHasFixedSize(true)
         }
 
-        gallerydapter.setOnClickListener(object: GalleryAdapter.OnClickListener{
+        gallerydapter.setOnClickListener(object: HitPagingAdapter.OnClickListener{
             override fun onCLick(position: Int, model: Hit) {
 
                 // using SafeArg
-                val action = HomeFragmentDirections.actionHomeFragmentToFullScreenFragment(PhotosResponse(images,0,0), position)
+                val action = HomeFragmentDirections.actionHomeFragmentToFullScreenFragment( position)
                 findNavController().navigate(action)
-
-                /* manually creating bundle
-//                val bundle= Bundle().apply {
-//                    putParcelable("photo", model)
-//                }
-//                findNavController().navigate(
-//                    R.id.action_homeFragment_to_fullScreenFragment,
-//                    bundle
-                )  */
             }
         })
+
+        viewModel.list.observe(viewLifecycleOwner){
+            gallerydapter.submitData(lifecycle, it)
+        }
     }
 
     private fun setObservers(){
@@ -107,8 +98,8 @@ class HomeFragment : Fragment() {
 
                     resource.data?.let { list->
 
-                        images= list as ArrayList<Hit>
-                        gallerydapter.differ.submitList(list)
+//                        images= list as ArrayList<Hit>
+//                        gallerydapter.differ.submitList(list)
                         Timber.tag(TAG+ " : Result").d(list.toString())
 
                     }
@@ -133,7 +124,7 @@ class HomeFragment : Fragment() {
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         window.statusBarColor = ContextCompat.getColor(
                 this,
-                R.color.red2
+                R.color.base2_bg
             )
     }
 

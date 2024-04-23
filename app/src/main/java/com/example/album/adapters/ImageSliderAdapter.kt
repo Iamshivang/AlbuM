@@ -66,7 +66,7 @@ class ImageSliderAdapter(private val items: List<Hit>): RecyclerView.Adapter<Ima
                         .load(it)
                         .thumbnail(Glide.with(itemBinding.root.context).load(dummyURL))
                         .fitCenter()
-                        .transition(DrawableTransitionOptions.withCrossFade())
+//                        .transition(DrawableTransitionOptions.withCrossFade())
                         .error(R.drawable.placeholder)
                         .placeholder(R.drawable.placeholder)
                         .into(itemBinding.pvFullscreen)
