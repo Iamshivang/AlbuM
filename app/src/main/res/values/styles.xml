@@ -4,4 +4,17 @@
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
+
+    <style name="AppTheme.Tabs.TextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">true</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:letterSpacing">+0.04</item>
+        <item name="android:textColor">@color/better_white</item>
+        <item name="android:fontFamily">@font/sfregular</item>
+    </style>
+
+    <style name="Widget.Theme.AlbuM.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
 </resources>

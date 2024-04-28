@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/fullscreenBackgroundColor"
+    android:theme="@style/ThemeOverlay.AlbuM.FullscreenContainer"
+    tools:context=".ui.fullScreenPhoto.FullscreenActivity">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top|start"
+        android:padding="12dp"
+        android:tint="@color/white"
+        android:background="@drawable/bg_rounded_btn"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        app:srcCompat="@drawable/arrow_back_icon_24"
+        android:id="@+id/backBtn"/>
+
+</FrameLayout>

@@ -1,8 +1,10 @@
 package com.example.album.ui.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.album.model.Hit
 import com.example.album.repository.DefaultRepository
@@ -17,8 +19,8 @@ class MainViewModel @Inject constructor(
     private val repository: DefaultRepository
 ): ViewModel(){
 
-    //
-    val list= repository.getHits("india").cachedIn(viewModelScope)
+    val list: LiveData<PagingData<Hit>> = repository.getHits("india").cachedIn(viewModelScope)
+
     //
     var liveDataList: MutableLiveData<Resource<List<Hit>>> = MutableLiveData()
 

@@ -26,7 +26,7 @@ class HitPagingAdapter: PagingDataAdapter<Hit, HitPagingAdapter.ViewHolder>(COMP
 
     companion object{
 
-        private val COMPARATOR= object: DiffUtil.ItemCallback<Hit>() {
+        val COMPARATOR= object: DiffUtil.ItemCallback<Hit>() {
             override fun areItemsTheSame(oldItem: Hit, newItem: Hit): Boolean {
                 return oldItem.id== newItem.id
             }
@@ -86,9 +86,8 @@ class HitPagingAdapter: PagingDataAdapter<Hit, HitPagingAdapter.ViewHolder>(COMP
                     Glide
                         .with(itemBinding.root.context)
                         .load(it)
-                        .thumbnail(Glide.with(itemBinding.root.context).load(dummyURL))
-                        .fitCenter()
-                        .listener(object : RequestListener<Drawable> {
+                        .thumbnail(Glide.with(itemBinding.root.context).load(dummyURL)
+                            .listener(object : RequestListener<Drawable> {
                             override fun onLoadFailed(
                                 e: GlideException?,
                                 model: Any?,
@@ -111,7 +110,9 @@ class HitPagingAdapter: PagingDataAdapter<Hit, HitPagingAdapter.ViewHolder>(COMP
                                 itemBinding.sflPlaceholder.visibility= View.GONE
                                 return false
                             }
-                        }).into(itemBinding.ivGalleryPhoto)
+                        }))
+                        .fitCenter()
+                        .into(itemBinding.ivGalleryPhoto)
 
                 }catch (e: Exception){
 

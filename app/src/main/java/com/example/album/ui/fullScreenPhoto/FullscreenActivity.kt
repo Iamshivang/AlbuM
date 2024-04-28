@@ -1,6 +1,7 @@
 package com.example.album.ui.fullScreenPhoto
 
 import android.Manifest
+import androidx.appcompat.app.AppCompatActivity
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.WallpaperManager
@@ -13,26 +14,25 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.example.album.R
+import com.example.album.databinding.ActivityFullscreenBinding
 import com.example.album.adapters.ImageSliderAdapter
-import com.example.album.databinding.FragmentFullScreenBinding
 import com.example.album.databinding.MoreBottomsheetBinding
 import com.example.album.databinding.SetAsBottomsheetBinding
 import com.example.album.model.Hit
+import com.example.album.paging.PagingImageSliderAdapter
 import com.example.album.repository.DefaultRepository
+import com.example.album.ui.MainActivity
+import com.example.album.ui.home.HomeFragment
+import com.example.album.ui.home.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -44,51 +44,56 @@ import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
 
+/*
+created by  Shivang Yadav on 28-04-2024
+gitHub: https://github.com/Iamshivang
+project: AlbuM
+description: Activity to present full screen view of image
+*/
 
 @AndroidEntryPoint
-class FullScreenFragment : Fragment() {
+class FullscreenActivity : AppCompatActivity() {
 
-    private val TAG= "FullScreenFragment"
+    private val TAG= "FullScreenActivity"
     private val STORAGE_PERMISSION_CODE = 23
 
     @Inject
     lateinit var repository: DefaultRepository
     lateinit var currModel: Hit
 
-    private lateinit var binding: FragmentFullScreenBinding
+    private lateinit var binding: ActivityFullscreenBinding
+    private val viewModel: MainViewModel  by viewModels()
     private lateinit var setASBottomSheetBinding: SetAsBottomsheetBinding
     private lateinit var moreBottomSheetBinding: MoreBottomsheetBinding
     private var currentPosition: Int = 0
     private lateinit var viewPager: ViewPager2
-    private lateinit var images: ArrayList<Hit>
-//    private val args : FullScreenFragmentArgs by navArgs()
+    private lateinit var adapter: PagingImageSliderAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentFullScreenBinding.inflate(inflater)
-        return binding.root
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding = ActivityFullscreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setUpViews()
     }
 
     private fun setUpViews(){
 
-        requireActivity().transparentStatusBar(true)
+
         binding.backBtn.setOnClickListener{
-            requireActivity().onBackPressed()
+            this.onBackPressed()
         }
-//        images= args.photoResponse.hits!!
-//        currentPosition= args.position
-        val adapter = ImageSliderAdapter(images)
+        currentPosition= intent.getIntExtra("position", 0)
+        adapter = PagingImageSliderAdapter()
         viewPager= binding.viewPager
         viewPager.adapter = adapter
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+
+        viewModel.list.observe(this){
+            adapter.submitData(lifecycle, it)
+        }
+
         viewPager.setCurrentItem(currentPosition, false)
 
         // registering for page change callback
@@ -107,14 +112,14 @@ class FullScreenFragment : Fragment() {
         )
 
 
-        adapter.setOnMoreClickListener(object : ImageSliderAdapter.OnMoreClickListener {
+        adapter.setOnMoreClickListener(object : PagingImageSliderAdapter.OnMoreClickListener {
             override fun onMoreClick(position: Int, model: Hit) {
 
                 moreBottomDialog(model)
             }
         })
 
-        adapter.setOnSetAsClickListener(object : ImageSliderAdapter.OnSetAsClickListener {
+        adapter.setOnSetAsClickListener(object : PagingImageSliderAdapter.OnSetAsClickListener {
             override fun onSetAsClick(position: Int, model: Hit) {
 
                 setAsBottomDialog(model)
@@ -124,7 +129,7 @@ class FullScreenFragment : Fragment() {
 
     private fun setAsBottomDialog(model: Hit){
         setASBottomSheetBinding = SetAsBottomsheetBinding.inflate(layoutInflater)
-        val dialog = BottomSheetDialog(requireActivity())
+        val dialog = BottomSheetDialog(this)
 
 
 
@@ -154,7 +159,7 @@ class FullScreenFragment : Fragment() {
 
     private fun moreBottomDialog(model: Hit){
         moreBottomSheetBinding = MoreBottomsheetBinding.inflate(layoutInflater)
-        val dialog = BottomSheetDialog(requireActivity())
+        val dialog = BottomSheetDialog(this)
 
         moreBottomSheetBinding.rlShare.setOnClickListener {
             dialog.dismiss()
@@ -171,7 +176,7 @@ class FullScreenFragment : Fragment() {
         }
 
         moreBottomSheetBinding.rlAdd.setOnClickListener {
-            Toast.makeText(requireActivity(), "Share", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
@@ -201,7 +206,7 @@ class FullScreenFragment : Fragment() {
                 .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                         try {
-                            val wallpaperManager = WallpaperManager.getInstance(context)
+                            val wallpaperManager = WallpaperManager.getInstance(this@FullscreenActivity)
                             if (screen== 1) {
                                 wallpaperManager.setBitmap(resource, null, true, WallpaperManager.FLAG_SYSTEM)
                             } else if(screen== 0){
@@ -211,10 +216,10 @@ class FullScreenFragment : Fragment() {
                                 wallpaperManager.setBitmap(resource, null, true, WallpaperManager.FLAG_LOCK)
                             }
 
-                            Toast.makeText(requireActivity(), "Wallpaper set successfully", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@FullscreenActivity, "Wallpaper set successfully", Toast.LENGTH_SHORT).show()
                         } catch (e: Exception) {
                             Timber.tag(TAG).e("Failed to set wallpaper: ${e.message}")
-                            Toast.makeText(requireActivity(), "Failed to set wallpaper", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@FullscreenActivity, "Failed to set wallpaper", Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -232,7 +237,7 @@ class FullScreenFragment : Fragment() {
             repository.downloadFile(username, url)
         }
 
-        Toast.makeText(requireActivity(), "download complete", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@FullscreenActivity, "download complete", Toast.LENGTH_SHORT).show()
     }
 
     private fun checkPermission(): Boolean{
@@ -243,9 +248,9 @@ class FullScreenFragment : Fragment() {
         } else {
             //Below android 11
             val write =
-                ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             val read =
-                ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             read == PackageManager.PERMISSION_GRANTED && write == PackageManager.PERMISSION_GRANTED
         }
     }
@@ -255,13 +260,13 @@ class FullScreenFragment : Fragment() {
         //Android is 11 (R) or above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
 
-            val builder: AlertDialog.Builder= AlertDialog.Builder(requireActivity())
+            val builder: AlertDialog.Builder= AlertDialog.Builder(this)
             builder.setTitle("Alert").setMessage("Storage permission needed for downloads").setPositiveButton("Grant"){ dialog, _->
 
                 try {
                     val intent = Intent()
                     intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                    val uri = Uri.fromParts("package", requireActivity().getPackageName(), null)
+                    val uri = Uri.fromParts("package", this@FullscreenActivity.getPackageName(), null)
                     intent.setData(uri)
                     storageActivityResultLauncher.launch(intent)
                 } catch (e: java.lang.Exception) {
@@ -304,7 +309,7 @@ class FullScreenFragment : Fragment() {
                     .d("storageActivityResultLauncher: Manage External Storage Permission is granted")
             } else {
                 // Manage External Storage Permission is denied
-                Toast.makeText(requireActivity(), "Storage Permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@FullscreenActivity, "Storage Permission denied", Toast.LENGTH_SHORT).show()
                 Timber.tag(TAG)
                     .d("storageActivityResultLauncher: Manage External Storage Permission is denied")
             }
@@ -335,15 +340,15 @@ class FullScreenFragment : Fragment() {
                     //External Storage Permission denied...
                     Timber.tag(TAG)
                         .d("onRequestPermissionsResult: External Storage Permission denied...")
-                    Toast.makeText(requireActivity(), "Storage Permission denied", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@FullscreenActivity, "Storage Permission denied", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
-    fun Fragment.shareImage(imageUrl: String) {
+    fun Activity.shareImage(imageUrl: String) {
 
-        val file = File(requireContext().cacheDir, "share_image.jpg")
+        val file = File(this@FullscreenActivity.cacheDir, "share_image.jpg")
 
         // Load the image and save it to a file
         Glide.with(this)
@@ -359,7 +364,7 @@ class FullScreenFragment : Fragment() {
                         // Create an Intent to share the image
                         val shareIntent = Intent(Intent.ACTION_SEND).apply {
                             type = "image/jpeg"
-                            putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.provider", file))
+                            putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this@FullscreenActivity, "${this@FullscreenActivity.packageName}.provider", file))
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         }
 
@@ -369,12 +374,12 @@ class FullScreenFragment : Fragment() {
                     } catch (e: IOException) {
                         e.printStackTrace()
                         Timber.tag(TAG).d("Failed to share image: ${e.message}")
-                        Toast.makeText(requireContext(), "Failed to share image", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@FullscreenActivity, "Failed to share image", Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
                         // Handle any other unexpected exceptions
                         e.printStackTrace()
                         Timber.tag(TAG).d("Unexpected error occurred: ${e.message}")
-                        Toast.makeText(requireContext(), "Unexpected error occurred", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@FullscreenActivity, "Unexpected error occurred", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -385,26 +390,4 @@ class FullScreenFragment : Fragment() {
     }
 
 
-
-    private fun Activity.transparentStatusBar(it: Boolean) {
-        window.decorView.systemUiVisibility =
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        window.statusBarColor =
-            if (it) ContextCompat.getColor(
-                this,
-                android.R.color.transparent
-            ) else ContextCompat.getColor(
-                this,
-                R.color.base2_bg
-            )
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        // unregistering the onPageChangedCallback
-        viewPager.unregisterOnPageChangeCallback(
-            object : ViewPager2.OnPageChangeCallback() {}
-        )
-    }
 }

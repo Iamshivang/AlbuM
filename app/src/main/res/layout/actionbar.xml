@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp"
+    android:paddingTop="5dp"
     android:background="@color/base2_bg"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/ll_search"
         app:layout_constraintTop_toTopOf="parent"
@@ -16,54 +16,47 @@
         android:layout_height="55dp">
 
         <ImageView
-            android:layout_width="0dp"
-            android:layout_weight="1.3"
+            android:layout_width="45dp"
             android:layout_gravity="center"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="7dp"
             android:scaleX="0.8"
             android:scaleY="0.8"
+            android:layout_alignParentStart="true"
             android:layout_marginBottom="7dp"
-            android:layout_height="match_parent"
+            android:layout_height="45dp"
             android:src="@drawable/_bureger_icon"
             android:id="@+id/iv_ham_burger"
-            app:tint="@color/primary" />
+            app:tint="@color/primary"/>
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/et_search_bar"
-            android:layout_width="0dp"
-            android:layout_weight="9"
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginBottom="7dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/sweets_smile"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="@color/primary"
+            android:layout_toRightOf="@+id/iv_ham_burger"
+            android:textSize="30dp"/>
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_gravity="center"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="7dp"
-            android:background="@drawable/edit_text_bg"
-            android:drawableStart="@drawable/ic_searchico"
-            android:paddingStart="15dp"
-            android:paddingBottom="1dp"
-            android:gravity="start|center_vertical"
-            android:hint="@string/start_tying_to_search"
-            android:textAllCaps="false"
-            android:textColorHint="@color/edit_text_hint"
-            android:drawablePadding="15dp"
-            android:transitionName="searchActivityTransition"
-            android:textSize="18dp"
-            android:textColor="@color/edit_text_txt"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:inputType="textAutoCorrect" />
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="7dp"
+            android:layout_height="45dp"
+            android:src="@drawable/ic_searchico"
+            android:id="@+id/iv_search"
+            app:tint="@color/primary"/>
 
 
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:id="@+id/line"
-        android:background="@color/red2"
-        app:layout_constraintTop_toBottomOf="@+id/ll_search" />
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

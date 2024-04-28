@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.HomeFragment">
+
+    <include
+        android:id="@+id/i_actionbar"
+        layout="@layout/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:visibility="visible" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBarHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:indeterminate="true"
+        app:indicatorColor="@color/primary"
+        android:layout_gravity="bottom"
+        app:indicatorDirectionLinear="leftToRight"
+        app:trackColor="@android:color/darker_gray"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:elevation="2dp"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/pb_bubble_loding"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:elevation="10dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            app:lottie_colorFilter="@color/primary"
+            tools:visibility="visible"
+            android:layout_marginTop="55dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/lottie_bubble_loading"
+            app:lottie_speed="1" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_error"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:elevation="10dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        android:layout_marginTop="55dp"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/lottie_error404"
+        app:lottie_speed="1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="65dp"
+        android:orientation="vertical"
+        tools:listitem="@layout/gallery_item"
+        android:visibility="visible"
+        tools:visibility="visible"
+        app:spanCount="2"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        android:elevation="2dp"/>
+
+</FrameLayout>
