@@ -42,7 +42,5 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = list[position]
         }.attach()
-
-        binding.et.requestFocus()
     }
 }

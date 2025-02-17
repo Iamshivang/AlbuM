@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
 //    private val viewModel: MainViewModel by activityViewModels()
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var gallerydapter: HitPagingAdapter
+    private lateinit var galleryAdapter: HitPagingAdapter
     private lateinit var rvGallery: RecyclerView
 
     override fun onCreateView(
@@ -33,15 +33,11 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View{
         binding = FragmentHomeBinding.inflate(inflater)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         viewModel= (activity as MainActivity).viewModel
 
         setViews()
+        return binding.root
     }
 
     private fun setViews() {
@@ -50,19 +46,24 @@ class HomeFragment : Fragment() {
 //        paginationProgressBar= binding.progressBarHorizontal
 //        progressLoading= binding.pbBubbleLoding
 //        errorProgressBar= binding.lottieError
-        gallerydapter= HitPagingAdapter()
+        galleryAdapter= HitPagingAdapter()
 
         rvGallery.apply {
             layoutManager = GridLayoutManager(requireActivity(), 2)
-            adapter = gallerydapter
+            adapter = galleryAdapter
             setHasFixedSize(true)
         }
 
-        viewModel.list.observe(viewLifecycleOwner){
-            gallerydapter.submitData(lifecycle, it)
+//        viewModel._list.observe(viewLifecycleOwner){
+//            galleryAdapter.submitData(lifecycle, it)
+//        }
+
+        viewModel.getHitsData("india").observe(viewLifecycleOwner) { pagingData ->
+            galleryAdapter.submitData(lifecycle, pagingData)
         }
 
-        gallerydapter.setOnClickListener(object: HitPagingAdapter.OnClickListener{
+
+        galleryAdapter.setOnClickListener(object: HitPagingAdapter.OnClickListener{
             override fun onCLick(position: Int, model: Hit) {
 
                 val intent = Intent(requireActivity(), FullscreenActivity::class.java)
@@ -72,5 +73,4 @@ class HomeFragment : Fragment() {
             }
         })
     }
-
 }

@@ -45,12 +45,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <EditText
-        android:id="@+id/et"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:visibility="visible"
-        />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

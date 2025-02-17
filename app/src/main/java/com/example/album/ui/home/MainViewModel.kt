@@ -19,10 +19,16 @@ class MainViewModel @Inject constructor(
     private val repository: DefaultRepository
 ): ViewModel(){
 
-    val list: LiveData<PagingData<Hit>> = repository.getHits("india").cachedIn(viewModelScope)
+    fun getHitsData(query: String): LiveData<PagingData<Hit>> {
+        return repository.getHits(query).cachedIn(viewModelScope)
+    }
+//    val list: LiveData<PagingData<Hit>> = repository.getHits("india").cachedIn(viewModelScope)
 
     //
     var liveDataList: MutableLiveData<Resource<List<Hit>>> = MutableLiveData()
+
+    private var _lists= MutableLiveData<PagingData<Hit>>()
+    val lists: LiveData<PagingData<Hit>> get() = _lists
 
     fun loadListOfData(query: String, colors: String, pageNumber: Int)= viewModelScope.launch{
 
@@ -32,7 +38,7 @@ class MainViewModel @Inject constructor(
 
             if(hasInternetConnectivity()){
 
-//                val list = repository.getPhotos(query, colors, pageNumber)
+                val list = repository.getHits("india")
 //                liveDataList.postValue(list)
             }else{
                 liveDataList.postValue(Resource.Error("No Internet Connection."))

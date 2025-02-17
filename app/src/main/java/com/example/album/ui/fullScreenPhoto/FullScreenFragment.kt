@@ -68,13 +68,14 @@ class FullScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFullScreenBinding.inflate(inflater)
+        setUpViews()
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setUpViews()
     }
 
     private fun setUpViews(){

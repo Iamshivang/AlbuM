@@ -90,10 +90,13 @@ class FullscreenActivity : AppCompatActivity() {
         viewPager.adapter = adapter
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
 
-        viewModel.list.observe(this){
-            adapter.submitData(lifecycle, it)
-        }
+//        viewModel.list.observe(this){
+//            adapter.submitData(lifecycle, it)
+//        }
 
+        viewModel.getHitsData("india").observe(this) { pagingData ->
+            adapter.submitData(lifecycle, pagingData)
+        }
         viewPager.setCurrentItem(currentPosition, false)
 
         // registering for page change callback
