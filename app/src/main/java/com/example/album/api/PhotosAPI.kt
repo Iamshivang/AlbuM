@@ -17,5 +17,5 @@ interface PhotosAPI {
         @Query("image_type") imageType: String= Constants.imageType,
         @Query("orientation") orientation: String= Constants.orientation,
         @Query("pretty") pretty: Boolean= Constants.isPretty
-    ): PhotosResponse
+    ): Response<PhotosResponse>
 }

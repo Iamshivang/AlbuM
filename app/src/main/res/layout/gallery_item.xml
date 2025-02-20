@@ -20,32 +20,4 @@
         app:shapeAppearanceOverlay="@style/imageViewRounded"
         android:id="@+id/ivGalleryPhoto"/>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/sfl_placeholder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:animationCache="true"
-        android:visibility="visible"
-        tools:visibility="visible"
-        app:shimmer_repeat_mode="restart"
-        app:shimmer_shape="radial"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="match_parent"
-            app:layout_constraintWidth_percent="0.47"
-            android:layout_height="250dp"
-            android:backgroundTint="@color/base3_bg"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
-            app:shapeAppearance="?attr/actionButtonStyle"
-            app:shapeAppearanceOverlay="@style/imageViewRounded"
-            android:background="@color/shimmer_background"/>
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

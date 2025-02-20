@@ -95,7 +95,6 @@ class HitPagingAdapter: PagingDataAdapter<Hit, HitPagingAdapter.ViewHolder>(COMP
                                 isFirstResource: Boolean
                             ): Boolean {
                                 itemBinding.ivGalleryPhoto.isGone
-                                itemBinding.sflPlaceholder.isVisible
                                 return false
                             }
 
@@ -107,7 +106,6 @@ class HitPagingAdapter: PagingDataAdapter<Hit, HitPagingAdapter.ViewHolder>(COMP
                                 isFirstResource: Boolean
                             ): Boolean {
                                 itemBinding.ivGalleryPhoto.visibility= View.VISIBLE
-                                itemBinding.sflPlaceholder.visibility= View.GONE
                                 return false
                             }
                         }))

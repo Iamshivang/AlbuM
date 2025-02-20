@@ -1,5 +1,6 @@
 package com.example.album.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,9 +20,21 @@ class MainViewModel @Inject constructor(
     private val repository: DefaultRepository
 ): ViewModel(){
 
-    fun getHitsData(query: String): LiveData<PagingData<Hit>> {
-        return repository.getHits(query).cachedIn(viewModelScope)
+    private val _photos = MutableLiveData<Resource<List<Hit>>>()
+    val photos: LiveData<Resource<List<Hit>>> = _photos
+
+    fun fetchPhotos(query: String, colors: String, pageNumber: Int) {
+        viewModelScope.launch {
+            _photos.value = Resource.Loading()  // Show loading state
+            val result = repository.getPhotos(query, colors, pageNumber)
+            _photos.value = result
+            Log.i("MainViewModel", "Data: ${result}")
+        }
     }
+
+//    fun getHitsData(query: String): LiveData<PagingData<Hit>> {
+//        return repository.getHits(query).cachedIn(viewModelScope)
+//    }
 //    val list: LiveData<PagingData<Hit>> = repository.getHits("india").cachedIn(viewModelScope)
 
     //
@@ -38,7 +51,7 @@ class MainViewModel @Inject constructor(
 
             if(hasInternetConnectivity()){
 
-                val list = repository.getHits("india")
+//                val list = repository.getHits("india")
 //                liveDataList.postValue(list)
             }else{
                 liveDataList.postValue(Resource.Error("No Internet Connection."))

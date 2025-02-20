@@ -94,9 +94,9 @@ class FullscreenActivity : AppCompatActivity() {
 //            adapter.submitData(lifecycle, it)
 //        }
 
-        viewModel.getHitsData("india").observe(this) { pagingData ->
-            adapter.submitData(lifecycle, pagingData)
-        }
+//        viewModel.getHitsData("india").observe(this) { pagingData ->
+//            adapter.submitData(lifecycle, pagingData)
+//        }
         viewPager.setCurrentItem(currentPosition, false)
 
         // registering for page change callback
