@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.imageViewer.ImagerViewerActivity">
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/pv_fullscreen"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:src="@drawable/flag"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="bottom|center"
+        android:orientation="vertical"
+        android:layout_gravity="bottom|end">
+
+        <include
+            android:id="@+id/i_like"
+            layout="@layout/like"/>
+
+        <include
+            android:id="@+id/i_downloads"
+            layout="@layout/downloads"/>
+
+        <include
+            android:id="@+id/i_set_as"
+            layout="@layout/set_as"/>
+
+        <include
+            android:id="@+id/i_more"
+            layout="@layout/more"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top|start"
+        android:padding="12dp"
+        android:tint="@color/white"
+        android:background="@drawable/bg_rounded_btn"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        app:srcCompat="@drawable/arrow_back_icon_24"
+        android:id="@+id/backBtn"/>
+
+</FrameLayout>

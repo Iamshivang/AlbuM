@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -11,7 +12,11 @@ import com.example.album.model.Hit
 import com.example.album.repository.DefaultRepository
 import com.example.album.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import retrofit2.Call
 import java.io.IOException
 import javax.inject.Inject
 
@@ -20,28 +25,29 @@ class MainViewModel @Inject constructor(
     private val repository: DefaultRepository
 ): ViewModel(){
 
-    private val _photos = MutableLiveData<Resource<List<Hit>>>()
-    val photos: LiveData<Resource<List<Hit>>> = _photos
+//    val list= repository.getHits("india").cachedIn(viewModelScope)
 
-    fun fetchPhotos(query: String, colors: String, pageNumber: Int) {
-        viewModelScope.launch {
-            _photos.value = Resource.Loading()  // Show loading state
-            val result = repository.getPhotos(query, colors, pageNumber)
-            _photos.value = result
-            Log.i("MainViewModel", "Data: ${result}")
-        }
+    fun getHitsData(query: String): LiveData<Resource<PagingData<Hit>>>{
+
+        Resource.Loading<PagingData<Hit>>()
+
+        return repository.getHitsFlow(query)
+            .cachedIn(viewModelScope)
+            .map<PagingData<Hit>, Resource<PagingData<Hit>>> { pagingData ->
+                Resource.Success(pagingData)
+            }
+            .onStart { emit(Resource.Loading<PagingData<Hit>>()) }
+            .catch { e ->
+                emit(Resource.Error("Error: ${e.message}"))
+            }
+            .asLiveData()
     }
 
-//    fun getHitsData(query: String): LiveData<PagingData<Hit>> {
-//        return repository.getHits(query).cachedIn(viewModelScope)
-//    }
-//    val list: LiveData<PagingData<Hit>> = repository.getHits("india").cachedIn(viewModelScope)
+
+
 
     //
     var liveDataList: MutableLiveData<Resource<List<Hit>>> = MutableLiveData()
-
-    private var _lists= MutableLiveData<PagingData<Hit>>()
-    val lists: LiveData<PagingData<Hit>> get() = _lists
 
     fun loadListOfData(query: String, colors: String, pageNumber: Int)= viewModelScope.launch{
 
@@ -51,7 +57,7 @@ class MainViewModel @Inject constructor(
 
             if(hasInternetConnectivity()){
 
-//                val list = repository.getHits("india")
+//                val list = repository.getPhotos(query, colors, pageNumber)
 //                liveDataList.postValue(list)
             }else{
                 liveDataList.postValue(Resource.Error("No Internet Connection."))

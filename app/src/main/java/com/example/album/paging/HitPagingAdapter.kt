@@ -83,34 +83,13 @@ class HitPagingAdapter: PagingDataAdapter<Hit, HitPagingAdapter.ViewHolder>(COMP
             model.largeImageURL?.let {
                 try {
 
-                    Glide
-                        .with(itemBinding.root.context)
+                    Glide.with(itemBinding.root.context)
                         .load(it)
-                        .thumbnail(Glide.with(itemBinding.root.context).load(dummyURL)
-                            .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                itemBinding.ivGalleryPhoto.isGone
-                                return false
-                            }
-
-                            override fun onResourceReady(
-                                resource: Drawable,
-                                model: Any,
-                                target: Target<Drawable>?,
-                                dataSource: DataSource,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                itemBinding.ivGalleryPhoto.visibility= View.VISIBLE
-                                return false
-                            }
-                        }))
+                        .thumbnail(Glide.with(itemBinding.root.context).load(dummyURL))
                         .fitCenter()
                         .into(itemBinding.ivGalleryPhoto)
+
+
 
                 }catch (e: Exception){
 

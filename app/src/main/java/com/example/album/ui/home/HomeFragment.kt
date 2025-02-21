@@ -21,6 +21,7 @@ import com.example.album.model.Hit
 import com.example.album.paging.HitPagingAdapter
 import com.example.album.ui.MainActivity
 import com.example.album.ui.fullScreenPhoto.FullscreenActivity
+import com.example.album.ui.imageViewer.ImagerViewerActivity
 import com.example.album.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,7 +32,7 @@ class HomeFragment : Fragment() {
 //    private val viewModel: MainViewModel by activityViewModels()
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var galleryHiltAdapter: HiltAdapter
+    private lateinit var galleryHiltAdapter: HitPagingAdapter
     private lateinit var rvGallery: RecyclerView
 
     override fun onCreateView(
@@ -42,28 +43,43 @@ class HomeFragment : Fragment() {
 
         viewModel= (activity as MainActivity).viewModel
 
-        init()
+        rvGallery= binding.rvGallery
+
         setViews()
-        setObservers()
         return binding.root
     }
 
-    private fun init() {
-
-        rvGallery= binding.rvGallery
-        defineState(1)
-        viewModel.fetchPhotos("India", "", 1)
-    }
 
     private fun setViews() {
 
-        galleryHiltAdapter= HiltAdapter()
-//        paginationProgressBar= binding.progressBarHorizontal
-//        progressBar= binding.pbBubbleLoding
+        defineState(1)
+
+        galleryHiltAdapter= HitPagingAdapter()
+
 
         rvGallery.apply {
             layoutManager = StaggeredGridLayoutManager(2,RecyclerView.VERTICAL)
             adapter = galleryHiltAdapter
+        }
+
+        viewModel.getHitsData("india").observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    defineState(1)
+                }
+                is Resource.Success -> {
+                    // Submit the PagingData to your adapter
+                    resource.data?.let { galleryHiltAdapter.submitData(lifecycle, it) }
+                    Log.i("HomeFragment", "Data: ${resource.data}")
+                    defineState(2)
+                }
+                is Resource.Error -> {
+                    // Display error message
+                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
+                    Log.e("HomeFragment", "Error occurred: ${resource.message}")
+                    defineState(3)
+                }
+            }
         }
 
 //        gallerydapter.setOnClickListener(object: GalleryAdapter.OnClickListener{
@@ -89,37 +105,15 @@ class HomeFragment : Fragment() {
 //            galleryAdapter.submitData(lifecycle, it)
 //        }
 
-//        galleryAdapter.setOnClickListener(object: HitPagingAdapter.OnClickListener{
-//            override fun onCLick(position: Int, model: Hit) {
-//
-//                val intent = Intent(requireActivity(), FullscreenActivity::class.java)
-//                intent.putExtra("position", position)
-//                startActivity(intent)
-//
-//            }
-//        })
-    }
+        galleryHiltAdapter.setOnClickListener(object: HitPagingAdapter.OnClickListener{
+            override fun onCLick(position: Int, model: Hit) {
 
-    private fun setObservers(){
+                val intent = Intent(requireActivity(), ImagerViewerActivity::class.java)
+                intent.putExtra("selectedImage", model) // Pass only the selected Hit object
+                startActivity(intent)
 
-        viewModel.photos.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Resource.Loading -> {
-
-                    defineState(1)
-                }
-                is Resource.Success -> {
-
-                    galleryHiltAdapter.differ.submitList(result.data ?: emptyList())// Update adapter
-                    Log.i("HomeFragment", "Data: ${result.data}")
-                    defineState(2)
-                }
-                is Resource.Error -> {
-                    Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
-                    Log.e("HomeFragment", "Error occurred: ${result.message}")
-                }
             }
-        }
+        })
     }
 
     private fun defineState(type: Int){

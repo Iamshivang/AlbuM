@@ -16,7 +16,7 @@
         android:layout_gravity="bottom"
         app:indicatorDirectionLinear="leftToRight"
         app:trackColor="@android:color/darker_gray"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible"
         android:elevation="2dp"/>
 
@@ -280,7 +280,7 @@
         android:paddingTop="10dp"
         android:orientation="vertical"
         tools:listitem="@layout/gallery_item"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:visibility="visible"
         app:spanCount="2"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

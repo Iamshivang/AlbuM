@@ -3,12 +3,289 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/base_bg"
     tools:context=".ui.trending.TrendingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBarHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:indeterminate="true"
+        app:indicatorColor="@color/primary"
+        android:layout_gravity="bottom"
+        app:indicatorDirectionLinear="leftToRight"
+        app:trackColor="@android:color/darker_gray"
+        android:visibility="visible"
+        tools:visibility="visible"
+        android:elevation="2dp"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_Shimmer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:orientation="vertical"
+        android:visibility="visible"
+        tools:visibility="visible"
+        android:elevation="2dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="10dp">
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:animationCache="true"
+                    android:visibility="visible"
+                    tools:visibility="visible"
+                    app:shimmer_repeat_mode="restart"
+                    app:shimmer_shape="radial"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:background="@color/shimmer_background"/>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="10dp">
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:animationCache="true"
+                    android:visibility="visible"
+                    tools:visibility="visible"
+                    app:shimmer_repeat_mode="restart"
+                    app:shimmer_shape="radial"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:background="@color/shimmer_background"/>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="10dp">
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:animationCache="true"
+                    android:visibility="visible"
+                    tools:visibility="visible"
+                    app:shimmer_repeat_mode="restart"
+                    app:shimmer_shape="radial"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:background="@color/shimmer_background"/>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="10dp">
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:animationCache="true"
+                    android:visibility="visible"
+                    tools:visibility="visible"
+                    app:shimmer_repeat_mode="restart"
+                    app:shimmer_shape="radial"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:background="@color/shimmer_background"/>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="10dp">
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:animationCache="true"
+                    android:visibility="visible"
+                    tools:visibility="visible"
+                    app:shimmer_repeat_mode="restart"
+                    app:shimmer_shape="radial"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:background="@color/shimmer_background"/>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="10dp">
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:animationCache="true"
+                    android:visibility="visible"
+                    tools:visibility="visible"
+                    app:shimmer_repeat_mode="restart"
+                    app:shimmer_shape="radial"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:background="@color/shimmer_background"/>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:orientation="vertical"
+        tools:listitem="@layout/gallery_item"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:spanCount="2"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        android:elevation="2dp"/>
+
 
 </FrameLayout>

@@ -1,60 +1,142 @@
 package com.example.album.ui.trending
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.album.R
+import com.example.album.databinding.FragmentHomeBinding
+import com.example.album.databinding.FragmentTrendingBinding
+import com.example.album.model.Hit
+import com.example.album.paging.HitPagingAdapter
+import com.example.album.ui.MainActivity
+import com.example.album.ui.fullScreenPhoto.FullscreenActivity
+import com.example.album.ui.home.MainViewModel
+import com.example.album.utils.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TrendingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class TrendingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val TAG= "TrendingFragment"
+    private lateinit var viewModel: MainViewModel
+    private lateinit var binding: FragmentTrendingBinding
+    private lateinit var galleryHiltAdapter: HitPagingAdapter
+    private lateinit var rvGallery: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_trending, container, false)
+    ): View{
+        binding = FragmentTrendingBinding.inflate(inflater)
+
+        viewModel= (activity as MainActivity).viewModel
+
+        rvGallery= binding.rvGallery
+
+        setViews()
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TrendingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TrendingFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
+    private fun setViews() {
+
+        defineState(1)
+
+        galleryHiltAdapter= HitPagingAdapter()
+
+
+        rvGallery.apply {
+            layoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+            adapter = galleryHiltAdapter
+        }
+
+        viewModel.getHitsData("trending").observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    defineState(1)
+                }
+                is Resource.Success -> {
+                    // Submit the PagingData to your adapter
+                    resource.data?.let { galleryHiltAdapter.submitData(lifecycle, it) }
+                    Log.i(TAG, "Data: ${resource.data}")
+                    defineState(2)
+                }
+                is Resource.Error -> {
+                    // Display error message
+                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, "Error occurred: ${resource.message}")
+                    defineState(3)
                 }
             }
+        }
+
+//        gallerydapter.setOnClickListener(object: GalleryAdapter.OnClickListener{
+//            override fun onCLick(position: Int, model: Hit) {
+//
+//                // using SafeArg
+//                val action = HomeFragmentDirections.actionHomeFragmentToFullScreenFragment()
+//                findNavController().navigate(action)
+//
+//                /* manually creating bundle
+////                val bundle= Bundle().apply {
+////                    putParcelable("photo", model)
+////                }
+////                findNavController().navigate(
+////                    R.id.action_homeFragment_to_fullScreenFragment,
+////                    bundle
+//                )  */
+//            }
+
+
+
+//        viewModel._list.observe(viewLifecycleOwner){
+//            galleryAdapter.submitData(lifecycle, it)
+//        }
+
+        galleryHiltAdapter.setOnClickListener(object: HitPagingAdapter.OnClickListener{
+            override fun onCLick(position: Int, model: Hit) {
+
+                val intent = Intent(requireActivity(), FullscreenActivity::class.java)
+                intent.putExtra("position", position)
+                startActivity(intent)
+
+            }
+        })
+    }
+
+    private fun defineState(type: Int){
+
+        if(type== 1){
+
+            // Init1al loading
+            binding.progressBarHorizontal.isVisible= true
+            rvGallery.isVisible= false
+            binding.llShimmer.isVisible= true
+//            errorProgressBar.isVisible= false
+
+        }else if (type== 2){
+
+            // when photos are loaded
+            binding.progressBarHorizontal.isVisible= false
+            rvGallery.isVisible= true
+            binding.llShimmer.isVisible= false
+//            errorProgressBar.isVisible= false
+
+        }else if (type== 3){
+
+            // Error on loading data
+            binding.progressBarHorizontal.isVisible= false
+            rvGallery.isVisible= true
+            binding.llShimmer.isVisible= false
+//            errorProgressBar.isVisible= false
+        }
     }
 }

@@ -48,7 +48,6 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.20")
 
-
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
@@ -56,6 +55,9 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.50")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("androidx.activity:activity:1.9.0")
+    implementation("androidx.activity:activity-ktx:1.9.0")
+//    implementation("androidx.activity:activity-ktx:1.10.0")
     kapt("com.google.dagger:hilt-android-compiler:2.50")
 //    implementation("androidx.lifecycle:lifecycle-extensions:2.7.0")
 
