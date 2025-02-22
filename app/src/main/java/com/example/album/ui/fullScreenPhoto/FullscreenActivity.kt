@@ -14,6 +14,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -33,6 +34,7 @@ import com.example.album.repository.DefaultRepository
 import com.example.album.ui.MainActivity
 import com.example.album.ui.home.HomeFragment
 import com.example.album.ui.home.MainViewModel
+import com.example.album.utils.Resource
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -65,7 +67,6 @@ class FullscreenActivity : AppCompatActivity() {
     private val viewModel: MainViewModel  by viewModels()
     private lateinit var setASBottomSheetBinding: SetAsBottomsheetBinding
     private lateinit var moreBottomSheetBinding: MoreBottomsheetBinding
-    private var currentPosition: Int = 0
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: PagingImageSliderAdapter
 
@@ -76,6 +77,7 @@ class FullscreenActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setUpViews()
+        observeData()
     }
 
     private fun setUpViews(){
@@ -84,35 +86,10 @@ class FullscreenActivity : AppCompatActivity() {
         binding.backBtn.setOnClickListener{
             this.onBackPressed()
         }
-        currentPosition= intent.getIntExtra("position", 0)
         adapter = PagingImageSliderAdapter()
         viewPager= binding.viewPager
         viewPager.adapter = adapter
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
-
-//        viewModel.list.observe(this){
-//            adapter.submitData(lifecycle, it)
-//        }
-
-//        viewModel.getHitsData("india").observe(this) { pagingData ->
-//            adapter.submitData(lifecycle, pagingData)
-//        }
-        viewPager.setCurrentItem(currentPosition, false)
-
-        // registering for page change callback
-        binding.viewPager.registerOnPageChangeCallback(
-            object : ViewPager2.OnPageChangeCallback() {
-
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-
-                    //update the image number textview
-//                    binding.imageNumberTV.text = "${position + 1} / 4"
-                    currentPosition= position
-
-                }
-            }
-        )
 
 
         adapter.setOnMoreClickListener(object : PagingImageSliderAdapter.OnMoreClickListener {
@@ -128,6 +105,26 @@ class FullscreenActivity : AppCompatActivity() {
                 setAsBottomDialog(model)
             }
         })
+    }
+
+    private fun observeData() {
+        viewModel.getHitsData("india").observe(this) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    // Show loading state if needed
+                }
+                is Resource.Success -> {
+                    resource.data?.let { pagingData ->
+                        adapter.submitData(lifecycle, pagingData)
+                    }
+                    Log.i(TAG, "Data loaded successfully.")
+                }
+                is Resource.Error -> {
+                    Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, "Error occurred: ${resource.message}")
+                }
+            }
+        }
     }
 
     private fun setAsBottomDialog(model: Hit){
@@ -391,6 +388,5 @@ class FullscreenActivity : AppCompatActivity() {
                 }
             })
     }
-
 
 }

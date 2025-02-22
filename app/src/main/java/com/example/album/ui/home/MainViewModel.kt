@@ -8,6 +8,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.album.dataBase.interfaces.HitDataRepositories
 import com.example.album.model.Hit
 import com.example.album.repository.DefaultRepository
 import com.example.album.utils.Resource
@@ -22,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: DefaultRepository
+    private val repository: DefaultRepository,
+    private val collectionRepo: HitDataRepositories
 ): ViewModel(){
 
 //    val list= repository.getHits("india").cachedIn(viewModelScope)
@@ -43,8 +45,15 @@ class MainViewModel @Inject constructor(
             .asLiveData()
     }
 
-
-
+    fun insertHit(hit: Hit) {
+        viewModelScope.launch {
+            try {
+                collectionRepo.insertHit(hit)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
     //
     var liveDataList: MutableLiveData<Resource<List<Hit>>> = MutableLiveData()

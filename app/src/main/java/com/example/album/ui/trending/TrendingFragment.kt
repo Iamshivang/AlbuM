@@ -19,6 +19,7 @@ import com.example.album.paging.HitPagingAdapter
 import com.example.album.ui.MainActivity
 import com.example.album.ui.fullScreenPhoto.FullscreenActivity
 import com.example.album.ui.home.MainViewModel
+import com.example.album.ui.imageViewer.ImagerViewerActivity
 import com.example.album.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -58,7 +59,7 @@ class TrendingFragment : Fragment() {
             adapter = galleryHiltAdapter
         }
 
-        viewModel.getHitsData("trending").observe(viewLifecycleOwner) { resource ->
+        viewModel.getHitsData("popular").observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     defineState(1)
@@ -78,34 +79,11 @@ class TrendingFragment : Fragment() {
             }
         }
 
-//        gallerydapter.setOnClickListener(object: GalleryAdapter.OnClickListener{
-//            override fun onCLick(position: Int, model: Hit) {
-//
-//                // using SafeArg
-//                val action = HomeFragmentDirections.actionHomeFragmentToFullScreenFragment()
-//                findNavController().navigate(action)
-//
-//                /* manually creating bundle
-////                val bundle= Bundle().apply {
-////                    putParcelable("photo", model)
-////                }
-////                findNavController().navigate(
-////                    R.id.action_homeFragment_to_fullScreenFragment,
-////                    bundle
-//                )  */
-//            }
-
-
-
-//        viewModel._list.observe(viewLifecycleOwner){
-//            galleryAdapter.submitData(lifecycle, it)
-//        }
-
         galleryHiltAdapter.setOnClickListener(object: HitPagingAdapter.OnClickListener{
             override fun onCLick(position: Int, model: Hit) {
 
-                val intent = Intent(requireActivity(), FullscreenActivity::class.java)
-                intent.putExtra("position", position)
+                val intent = Intent(requireActivity(), ImagerViewerActivity::class.java)
+                intent.putExtra("selectedImage", model) // Pass only the selected Hit object
                 startActivity(intent)
 
             }

@@ -5,7 +5,9 @@
         <item name="android:navigationBarColor">@color/base_bg</item>
     </style>
 
-    <style name="Theme.AlbuM" parent="Base.Theme.AlbuM" />
+    <style name="Theme.AlbuM" parent="Base.Theme.AlbuM" >
+        <item name="android:statusBarColor">@color/base2_bg</item>
+    </style>
 
     <style name="imageViewRounded">
         <item name="cornerFamily">rounded</item>

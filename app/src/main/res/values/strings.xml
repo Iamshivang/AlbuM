@@ -14,4 +14,5 @@
     <string name="add_to_collection">Add to Collection</string>
     <string name="download">Download</string>
     <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="fab_for_the_fullscreen">fab for the FullScreen</string>
 </resources>

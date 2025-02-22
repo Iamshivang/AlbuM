@@ -22,6 +22,7 @@ import com.example.album.paging.HitPagingAdapter
 import com.example.album.ui.MainActivity
 import com.example.album.ui.fullScreenPhoto.FullscreenActivity
 import com.example.album.ui.imageViewer.ImagerViewerActivity
+import com.example.album.utils.PrefManager
 import com.example.album.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,6 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var galleryHiltAdapter: HitPagingAdapter
     private lateinit var rvGallery: RecyclerView
+    private lateinit var prefManager: PrefManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +57,9 @@ class HomeFragment : Fragment() {
         defineState(1)
 
         galleryHiltAdapter= HitPagingAdapter()
+        prefManager = PrefManager(requireActivity())
+        prefManager.setQuery("Cars")
+        val query= prefManager.getQuery()
 
 
         rvGallery.apply {
@@ -62,7 +67,7 @@ class HomeFragment : Fragment() {
             adapter = galleryHiltAdapter
         }
 
-        viewModel.getHitsData("india").observe(viewLifecycleOwner) { resource ->
+        viewModel.getHitsData(query).observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     defineState(1)
@@ -82,28 +87,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-//        gallerydapter.setOnClickListener(object: GalleryAdapter.OnClickListener{
-//            override fun onCLick(position: Int, model: Hit) {
-//
-//                // using SafeArg
-//                val action = HomeFragmentDirections.actionHomeFragmentToFullScreenFragment()
-//                findNavController().navigate(action)
-//
-//                /* manually creating bundle
-////                val bundle= Bundle().apply {
-////                    putParcelable("photo", model)
-////                }
-////                findNavController().navigate(
-////                    R.id.action_homeFragment_to_fullScreenFragment,
-////                    bundle
-//                )  */
-//            }
-
-
-
-//        viewModel._list.observe(viewLifecycleOwner){
-//            galleryAdapter.submitData(lifecycle, it)
-//        }
 
         galleryHiltAdapter.setOnClickListener(object: HitPagingAdapter.OnClickListener{
             override fun onCLick(position: Int, model: Hit) {
@@ -114,6 +97,10 @@ class HomeFragment : Fragment() {
 
             }
         })
+
+        binding.floatingActionButton.setOnClickListener {
+            startActivity(Intent(requireActivity(), FullscreenActivity::class.java))
+        }
     }
 
     private fun defineState(type: Int){

@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -35,7 +37,9 @@ import com.example.album.databinding.SetAsBottomsheetBinding
 import com.example.album.model.Hit
 import com.example.album.paging.PagingImageSliderAdapter
 import com.example.album.repository.DefaultRepository
+import com.example.album.ui.collections.CollectionsViewModel
 import com.example.album.ui.home.MainViewModel
+import com.example.album.utils.Resource
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +55,7 @@ import javax.inject.Inject
 class ImagerViewerActivity : AppCompatActivity() {
 
     private val TAG= "ImagerViewerActivity"
+    val viewModel: CollectionsViewModel  by viewModels()
     private val STORAGE_PERMISSION_CODE = 23
 
     @Inject
@@ -76,6 +81,27 @@ class ImagerViewerActivity : AppCompatActivity() {
 
         binding.backBtn.setOnClickListener{
             this.onBackPressed()
+        }
+
+        viewModel.hitList.observe(this) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    binding.progressBarHorizontal.isVisible = true
+                }
+                is Resource.Success -> {
+                    resource.message?.let { message ->
+                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                    }
+                    Log.i(TAG, "Data: ${resource.data}")
+                }
+                is Resource.Error -> {
+                    resource.message?.let { message ->
+                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                    }
+                    Log.e(TAG, "Error occurred: ${resource.message}")
+                }
+            }
+            binding.progressBarHorizontal.isVisible = false
         }
     }
 
@@ -172,7 +198,7 @@ class ImagerViewerActivity : AppCompatActivity() {
         }
 
         moreBottomSheetBinding.rlAdd.setOnClickListener {
-            Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show()
+            viewModel.insertHit(model)
             dialog.dismiss()
         }
 

@@ -2,11 +2,15 @@ package com.example.album.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "Hit_Table")
 data class Hit(
     val collections: Int?,
     val comments: Int?,
     val downloads: Int?,
+    @PrimaryKey(autoGenerate = true)
     val id: Int?,
     val imageHeight: Int?,
     val imageSize: Int?,
