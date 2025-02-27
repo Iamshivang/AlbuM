@@ -87,6 +87,7 @@ class CollectionsFragment : Fragment() {
 
                 val intent = Intent(requireActivity(), ImagerViewerActivity::class.java)
                 intent.putExtra("selectedImage", model) // Pass only the selected Hit object
+                intent.putExtra("isCollectionFrag", true) // Pass only the selected Hit object
                 startActivity(intent)
 
             }
@@ -120,4 +121,10 @@ class CollectionsFragment : Fragment() {
 //            errorProgressBar.isVisible= false
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        setViews()
+    }
+
 }

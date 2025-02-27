@@ -34,6 +34,7 @@ import com.example.album.repository.DefaultRepository
 import com.example.album.ui.MainActivity
 import com.example.album.ui.home.HomeFragment
 import com.example.album.ui.home.MainViewModel
+import com.example.album.utils.PrefManager
 import com.example.album.utils.Resource
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,6 +70,7 @@ class FullscreenActivity : AppCompatActivity() {
     private lateinit var moreBottomSheetBinding: MoreBottomsheetBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: PagingImageSliderAdapter
+    private lateinit var prefManager: PrefManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,7 +110,16 @@ class FullscreenActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        viewModel.getHitsData("india").observe(this) { resource ->
+
+        var category = intent.getStringExtra("category") ?: "Unknown"
+
+        if(category== "Unknown"){
+
+            prefManager = PrefManager(this)
+            category= prefManager.getQuery()
+        }
+
+        viewModel.getHitsData(category).observe(this) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     // Show loading state if needed
@@ -176,7 +187,8 @@ class FullscreenActivity : AppCompatActivity() {
         }
 
         moreBottomSheetBinding.rlAdd.setOnClickListener {
-            Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show()
+            viewModel.insertHit(model)
+            Toast.makeText(this, "Downloaded", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 

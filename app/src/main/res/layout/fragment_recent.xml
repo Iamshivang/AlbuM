@@ -3,12 +3,335 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/base_bg"
     tools:context=".ui.recent.RecentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_Shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            tools:visibility="visible"
+            android:elevation="2dp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/fl_india"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="10dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:src="@drawable/indiaimage"
+                        android:scaleType="fitXY"/>
+
+                    <TextView
+                        android:id="@+id/tv_india"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/sf_pro_display_semibold"
+                        android:gravity="center"
+                        android:text="India"
+                        android:textColor="@color/white"
+                        android:textSize="30dp"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fl_black"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="10dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:src="@drawable/black"
+                        android:scaleType="fitXY"/>
+
+                    <TextView
+                        android:id="@+id/tv_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/sf_pro_display_semibold"
+                        android:gravity="center"
+                        android:text="Black"
+                        android:textColor="@color/white"
+                        android:textSize="30dp"/>
+
+                </FrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/fl_cyberpunk"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="10dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:src="@drawable/cyberpunk"
+                        android:scaleType="fitXY"/>
+
+                    <TextView
+                        android:id="@+id/tv_cyberpunk"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/sf_pro_display_semibold"
+                        android:gravity="center"
+                        android:text="Cyberpunk"
+                        android:textColor="@color/white"
+                        android:textSize="30dp"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fl_gaming"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="10dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:src="@drawable/gaming"
+                        android:scaleType="fitXY"/>
+
+                    <TextView
+                        android:id="@+id/tv_gaming"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/sf_pro_display_semibold"
+                        android:gravity="center"
+                        android:text="Gaming"
+                        android:textColor="@color/white"
+                        android:textSize="30dp"/>
+
+                </FrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/fl_space"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="10dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:src="@drawable/space"
+                        android:scaleType="fitXY"/>
+
+                    <TextView
+                        android:id="@+id/tv_space"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/sf_pro_display_semibold"
+                        android:gravity="center"
+                        android:text="Space"
+                        android:textColor="@color/white"
+                        android:textSize="30dp"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fl_minimallistic"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="10dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:src="@drawable/minimalist"
+                        android:scaleType="fitXY"/>
+
+                    <TextView
+                        android:id="@+id/tv_minimalist"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/sf_pro_display_semibold"
+                        android:gravity="center"
+                        android:text="Minimalist"
+                        android:textColor="@color/white"
+                        android:textSize="30dp"/>
+
+                </FrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/fl_nature"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="10dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:src="@drawable/nature"
+                        android:scaleType="fitXY"/>
+
+                    <TextView
+                        android:id="@+id/tv_nature"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/sf_pro_display_semibold"
+                        android:gravity="center"
+                        android:text="Nature"
+                        android:textColor="@color/white"
+                        android:textSize="30dp"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fl_anime"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="10dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        app:layout_constraintWidth_percent="0.47"
+                        android:layout_height="250dp"
+                        android:backgroundTint="@color/base3_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/shimmer_image_two"
+                        app:shapeAppearance="?attr/actionButtonStyle"
+                        app:shapeAppearanceOverlay="@style/imageViewRounded"
+                        android:src="@drawable/anime"
+                        android:scaleType="fitXY"/>
+
+                    <TextView
+                        android:id="@+id/tv_anime"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/sf_pro_display_semibold"
+                        android:gravity="center"
+                        android:text="Anime"
+                        android:textColor="@color/white"
+                        android:textSize="30dp"/>
+
+                </FrameLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
 
 </FrameLayout>

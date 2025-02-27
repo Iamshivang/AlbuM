@@ -1,5 +1,6 @@
 package com.example.album.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -8,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.album.adapters.MainPagerAdapter
 import com.example.album.databinding.ActivityMainBinding
 import com.example.album.ui.home.MainViewModel
+import com.example.album.ui.search.SearchActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,10 +39,14 @@ class MainActivity : AppCompatActivity() {
         adapter= MainPagerAdapter(supportFragmentManager, lifecycle)
         viewPager.adapter= adapter
 
-        val list= listOf("HOME", "TRENDING", "RECENT", "COLLECTIONS")
+        val list= listOf("HOME", "TRENDING", "LIBRARY", "COLLECTIONS")
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = list[position]
         }.attach()
+
+        binding.iActionbar.ivSearch.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
+        }
     }
 }

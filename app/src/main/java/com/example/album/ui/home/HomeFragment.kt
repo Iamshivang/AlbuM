@@ -30,7 +30,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val TAG= "HomeFragment"
-//    private val viewModel: MainViewModel by activityViewModels()
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: FragmentHomeBinding
     private lateinit var galleryHiltAdapter: HitPagingAdapter

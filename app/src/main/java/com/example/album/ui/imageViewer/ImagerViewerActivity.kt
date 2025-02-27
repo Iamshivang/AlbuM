@@ -55,12 +55,13 @@ import javax.inject.Inject
 class ImagerViewerActivity : AppCompatActivity() {
 
     private val TAG= "ImagerViewerActivity"
-    val viewModel: CollectionsViewModel  by viewModels()
+    private val viewModel: CollectionsViewModel  by viewModels()
     private val STORAGE_PERMISSION_CODE = 23
 
     @Inject
     lateinit var repository: DefaultRepository
-    lateinit var currModel: Hit
+    private lateinit var currModel: Hit
+    private var fromCollFrag: Boolean= false
 
     private lateinit var binding: ActivityImagerViewerBinding
     private lateinit var setASBottomSheetBinding: SetAsBottomsheetBinding
@@ -76,6 +77,8 @@ class ImagerViewerActivity : AppCompatActivity() {
     private fun setUpViews(){
 
         val selectedHit: Hit? = intent.getParcelableExtra("selectedImage")
+        fromCollFrag = intent.getBooleanExtra("isCollectionFrag", false)
+
         bindItem(selectedHit!!)
         currModel= selectedHit
 
@@ -88,17 +91,17 @@ class ImagerViewerActivity : AppCompatActivity() {
                 is Resource.Loading -> {
                     binding.progressBarHorizontal.isVisible = true
                 }
-                is Resource.Success -> {
-                    resource.message?.let { message ->
-                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                    }
-                    Log.i(TAG, "Data: ${resource.data}")
-                }
                 is Resource.Error -> {
                     resource.message?.let { message ->
                         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                     }
                     Log.e(TAG, "Error occurred: ${resource.message}")
+                }
+                else -> {
+                    resource.message?.let { message ->
+                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                    }
+                    Log.i(TAG, "Data: ${resource.data}")
                 }
             }
             binding.progressBarHorizontal.isVisible = false
@@ -197,9 +200,21 @@ class ImagerViewerActivity : AppCompatActivity() {
                 requestWriteStoragePermission()
         }
 
+        if(fromCollFrag){
+
+            moreBottomSheetBinding.ivAdd.setImageResource(R.drawable.icon_delete_24)
+            moreBottomSheetBinding.tvAdd.text= "Delete"
+        }
         moreBottomSheetBinding.rlAdd.setOnClickListener {
-            viewModel.insertHit(model)
+
             dialog.dismiss()
+            if(fromCollFrag){
+
+                viewModel.deleteHit(model.id!!)
+                this.onBackPressed()
+            }else{
+                viewModel.insertHit(model)
+            }
         }
 
         moreBottomSheetBinding.rlVisit.setOnClickListener{
