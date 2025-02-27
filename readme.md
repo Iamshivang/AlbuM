@@ -1,6 +1,6 @@
 # AlbuM
 
-![AlbuM Logo](https://github.com/Iamshivang/AlbuM/blob/main/assets/icon.jpg)
+![AlbuM Logo](https://github.com/Iamshivang/AlbuM/blob/main/assets/icon.png)
 
 AlbuM is a feature-rich wallpaper application that allows users to explore, download, and set high-quality images as wallpapers. The app is built using Kotlin and follows MVVM architecture with various modern Android development libraries.
 
@@ -8,11 +8,15 @@ AlbuM is a feature-rich wallpaper application that allows users to explore, down
 
 | Home Screen | Trending Screen | Library Screen |
 |------------|---------------|---------------|
-| ![Screenshot](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-55-58-31_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) | ![Screenshot](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-56-06-56_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) | ![Screenshot](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-56-14-74_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) |
+| ![Home Screen](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-55-52-96_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) | ![Trending Screen](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-55-58-31_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) | ![Library Screen](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-56-06-56_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) |
 
-| Collections Screen | Search Screen | Full-Screen Viewer |
-|------------------|-------------|-----------------|
-| ![Screenshot](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-56-35-75_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) | ![Screenshot](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-56-42-79_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) | ![Screenshot](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-56-47-35_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) |
+| Collection Screen | Full-Screen Image Slider | Set Wallpaper Options |
+|------------------|---------------------|-----------------|
+| ![Collection Screen](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-56-14-74_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) | ![FullScreen Image Slider](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-56-35-75_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) | ![Set Wallpaper](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-56-42-79_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) |
+
+| Share/Download Options | Delete from Collection | Search Images |
+|------------------------|----------------------|--------------|
+| ![Share, Download, Add to Collection, Visit Article](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-56-47-35_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) | ![Delete Image](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-57-11-32_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) | ![Search Screen](https://github.com/Iamshivang/AlbuM/blob/main/assets/Screenshot_2025-02-27-17-57-40-89_011a7d1c46ae71f5b2fe4e8e9a7f2564.jpg) |
 
 ## 🎨 Features
 
